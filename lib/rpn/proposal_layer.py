@@ -12,8 +12,9 @@ from fast_rcnn.config import cfg
 from generate_anchors import generate_anchors
 from fast_rcnn.bbox_transform import bbox_transform_inv, clip_boxes
 from fast_rcnn.nms_wrapper import nms
+import json
 
-DEBUG = False
+DEBUG = True
 
 class ProposalLayer(caffe.Layer):
     """
@@ -57,6 +58,13 @@ class ProposalLayer(caffe.Layer):
         # apply NMS with threshold 0.7 to remaining proposals
         # take after_nms_topN proposals after NMS
         # return the top proposals (-> RoIs top, scores top)
+
+        with open('/home/oscar/bottom','w') as f:
+            scores = bottom[0].data.tolist()
+            bbox_deltas = bottom[1].data.tolist()
+            im_info = bottom[2].data.tolist()
+            json.dump([scores,bbox_deltas,im_info],f)
+            f.close()
 
         assert bottom[0].data.shape[0] == 1, \
             'Only single item batches are supported'

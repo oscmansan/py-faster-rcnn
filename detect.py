@@ -64,7 +64,7 @@ def draw_img_with_dets(img, boxes, scores):
         vis_detections(ax, cls, dets, thresh=CONF_THRESH)
     img = img[:, :, (2, 1, 0)] 
     ax.imshow(img, aspect='equal')
-    #fig.savefig('img{:d}.png'.format(i))
+    #fig.savefig('output.png')
 
 
 def total_area(boxes):
@@ -72,8 +72,8 @@ def total_area(boxes):
     y1 = boxes[:, 1::4].flatten()
     x2 = boxes[:, 2::4].flatten()
     y2 = boxes[:, 3::4].flatten()
-    area = 0
     assert x1.size == boxes.size/4
+    area = 0
     for i in range(boxes.size/4):
         w = x2[i]-x1[i]
         h = y2[i]-y1[i]
@@ -103,9 +103,10 @@ def detect(net, im_files):
     avg /= N
     print ('Detection took {:.3f}s\n').format(avg)
 
-    for i, im_file in enumerate(im_files):
+    '''for i, im_file in enumerate(im_files):
     	print 'drawing img', str(i) + ':', im_file + '...'
-        draw_img_with_dets(imgarr[i], boxes[i], scores[i])
+        draw_img_with_dets(imgarr[i], boxes[i], scores[i])'''
+    
 
 
 def usage():
@@ -134,13 +135,15 @@ if __name__ == '__main__':
     for (_, _, im_files) in os.walk(path):
         #im_files = [im_files[0]] * 10
         #im_files = im_files[0:5]
+        #im_files = ['006363.jpg', '000542.jpg', '004545.jpg']
+        im_files = [im_files[3]]
         print 'Input images:', str(im_files) + '\n'
         im_files = map(lambda im: path + '/' + im, im_files)
 
     # Caching data to accelerate forward pass for real images
     print 'Caching data...\n'
-    dummy_image = np.zeros((375,500,3), np.uint8)
-    im_detect(net, dummy_image)
+    dummy_image = np.zeros((600,1000,3), np.uint8)
+    #im_detect(net, dummy_image)
 
     detect(net, im_files)
 
