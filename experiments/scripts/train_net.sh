@@ -6,6 +6,8 @@ set -e
 export PYTHONUNBUFFERED="True"
 
 SOLVER=models/pascal_voc/VGG16/faster_rcnn_end2end/solver_wmask.prototxt
+WEIGHTS=data/imagenet_models/VGG16.v2.caffemodel
+#WEIGHTS=data/faster_rcnn_models/VGG16_faster_rcnn_final.caffemodel
 DATASET="voc_2007_trainval"
 ITERS=70000
 
@@ -15,6 +17,7 @@ echo Logging output to "$LOG"
 
 time ./tools/train_net.py \
   --solver ${SOLVER} \
+  --weights ${WEIGHTS} \
   --imdb ${DATASET} \
   --iters ${ITERS} \
   --cfg experiments/cfgs/faster_rcnn_end2end.yml \

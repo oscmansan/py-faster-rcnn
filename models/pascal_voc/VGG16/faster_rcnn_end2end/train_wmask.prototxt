@@ -583,6 +583,12 @@ layer {
   param {
     lr_mult: 1
   }
+  inner_product_param {
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+  }
 }
 layer {
   name: "fc7"
@@ -621,6 +627,12 @@ layer {
   top: "fc7"
   param {
     lr_mult: 1
+  }
+  inner_product_param {
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
   }
 }
 layer {
