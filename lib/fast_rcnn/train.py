@@ -13,6 +13,7 @@ import roi_data_layer.roidb as rdl_roidb
 from utils.timer import Timer
 import numpy as np
 import os
+import time
 
 from caffe.proto import caffe_pb2
 import google.protobuf as pb2
@@ -77,8 +78,9 @@ class SolverWrapper(object):
 
         infix = ('_' + cfg.TRAIN.SNAPSHOT_INFIX
                  if cfg.TRAIN.SNAPSHOT_INFIX != '' else '')
+	datetime = time.strftime("%Y%m%d%H%M%S")
         filename = (self.solver_param.snapshot_prefix + infix +
-                    '_iter_{:d}'.format(self.solver.iter) + '.caffemodel')
+                    '_iter_{:d}'.format(self.solver.iter) + '.caffemodel.' + datetime)
         filename = os.path.join(self.output_dir, filename)
 
         net.save(str(filename))
