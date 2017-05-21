@@ -23,22 +23,23 @@ for layer in net_param.layer:
 			layers[layer.name] = data, bias
 
 
+# pruning percentage
+p = 0.3
+
 print 'Pruning fc6 layer...'
 diag = np.diagonal(layers['fc6_mask'])
-keep1 = diag>0.771
+th = diag[np.argsort(diag)[int(p*len(diag))]]
+keep1 = diag>th
 data = layers['fc6'][0]
 bias = layers['fc6'][1]
-assert(data.shape[0]==diag.shape[0])
-assert(bias.shape[0]==diag.shape[0])
 layers['fc6'] = data[keep1,:], bias[keep1]
 
 print 'Pruning fc7 layer...'
 diag = np.diagonal(layers['fc7_mask'])
-keep2 = diag>0.7715
+th = diag[np.argsort(diag)[int(p*len(diag))]]
+keep2 = diag>th
 data = layers['fc7'][0][:,keep1]
 bias = layers['fc7'][1]
-assert(data.shape[0]==diag.shape[0])
-assert(bias.shape[0]==diag.shape[0])
 layers['fc7'] = data[keep2,:], bias[keep2]
 
 print 'Adapting cls_score layer...'
