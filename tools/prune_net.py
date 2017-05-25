@@ -13,7 +13,7 @@ f.close()
 
 layers = {}
 for layer in net_param.layer:
-	if layer.name in ['fc6','fc6_mask','fc7','fc7_mask','cls_score','bbox_pred']:
+	if layer.name in ['fc6','fc7','fc7_mask','cls_score','bbox_pred']:
 		blobs = layer.blobs
 		data = np.array(blobs[0].data).reshape(blobs[0].shape.dim)
 		if len(blobs) == 1:	
@@ -24,20 +24,20 @@ for layer in net_param.layer:
 
 
 # pruning percentage
-p = 0.3
+p = 0.5
 
 print 'Pruning fc6 layer...'
-diag = np.diagonal(layers['fc6_mask'])
-th = diag[np.argsort(diag)[int(p*len(diag))]]
-keep1 = diag>th
+inorm = np.absolute(layers['fc6'][0]).mean(axis=1)
+th = inorm[np.argsort(inorm)[int(p*len(inorm))]]
+keep1 = inorm>th
 data = layers['fc6'][0]
 bias = layers['fc6'][1]
 layers['fc6'] = data[keep1,:], bias[keep1]
 
 print 'Pruning fc7 layer...'
-diag = np.diagonal(layers['fc7_mask'])
-th = diag[np.argsort(diag)[int(p*len(diag))]]
-keep2 = diag>th
+inorm = np.absolute(layers['fc7'][0]).mean(axis=1)
+th = inorm[np.argsort(inorm)[int(p*len(inorm))]]
+keep2 = inorm>th
 data = layers['fc7'][0][:,keep1]
 bias = layers['fc7'][1]
 layers['fc7'] = data[keep2,:], bias[keep2]
