@@ -23,6 +23,7 @@ import numpy as np
 import scipy.io as sio
 import caffe, os, sys, cv2
 import argparse
+import random
 
 CLASSES = ('__background__',
            'aeroplane', 'bicycle', 'bird', 'boat',
@@ -74,6 +75,7 @@ def demo(net, image_name):
 
     # Load the demo image
     im_file = os.path.join(cfg.DATA_DIR, 'demo', image_name)
+    #im_file = 'data/VOCdevkit2007/VOC2007/JPEGImages/' + image_name
     im = cv2.imread(im_file)
 
     # Detect all object classes and regress object bounds
@@ -120,7 +122,8 @@ if __name__ == '__main__':
     #prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0], 'faster_rcnn_end2end', 'test.prototxt')
     prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0], 'faster_rcnn_end2end', 'test_pruned.prototxt')
     #caffemodel = os.path.join(cfg.DATA_DIR, 'faster_rcnn_models', NETS[args.demo_net][1])
-    caffemodel = '../protobuf/VGG16_faster_rcnn_final.caffemodel.pruned'
+    #caffemodel = '../protobuf/VGG16_faster_rcnn_final.caffemodel.pruned'
+    caffemodel = 'output/faster_rcnn_end2end/voc_2007_trainval/vgg16_faster_rcnn_iter_70000.caffemodel.20170527111723'
 
     if not os.path.isfile(caffemodel):
         raise IOError(('{:s} not found.\nDid you run ./data/script/'
@@ -141,8 +144,8 @@ if __name__ == '__main__':
     for i in xrange(2):
         _, _= im_detect(net, im)
 
-    im_names = ['000456.jpg', '000542.jpg', '001150.jpg',
-                '001763.jpg', '004545.jpg']
+    im_names = ['000456.jpg', '000542.jpg', '001150.jpg', '001763.jpg', '004545.jpg']
+    #im_names = random.sample(os.listdir('data/VOCdevkit2007/VOC2007/JPEGImages'),10)
     for im_name in im_names:
         print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         print 'Demo for data/demo/{}'.format(im_name)

@@ -13,7 +13,7 @@ f.close()
 
 layers = {}
 for layer in net_param.layer:
-	if layer.name in ['fc6','fc7','fc7_mask','cls_score','bbox_pred']:
+	if layer.name in ['fc6','fc7','cls_score','bbox_pred']:
 		blobs = layer.blobs
 		data = np.array(blobs[0].data).reshape(blobs[0].shape.dim)
 		if len(blobs) == 1:	
@@ -24,7 +24,7 @@ for layer in net_param.layer:
 
 
 # pruning percentage
-p = 0.5
+p = 0.8
 
 print 'Pruning fc6 layer...'
 inorm = np.absolute(layers['fc6'][0]).mean(axis=1)

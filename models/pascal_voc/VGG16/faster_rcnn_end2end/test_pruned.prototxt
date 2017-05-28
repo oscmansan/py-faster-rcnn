@@ -500,7 +500,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 2047
+    num_output: 819
   }
 }
 layer {
@@ -532,7 +532,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 2047
+    num_output: 819
   }
 }
 layer {
